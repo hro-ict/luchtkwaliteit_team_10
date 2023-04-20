@@ -1,4 +1,4 @@
-# luchtkwaliteit_team_10
+luchtkwaliteit app
 
 Het Idee: Voorspellen van luchtkwaliteit: Via  AI-algoritmen willen we  luchtkwaliteit in een bepaald gebied voorspellen op basis van gegevens uit het verleden en van sensoren en satellieten.  ​
 
