@@ -3,7 +3,7 @@
 
 ```javascript
 
-const data= {
+const server_data= {
     //max 5 days
     //year-month-day
     start_date: "2023-10-10",
