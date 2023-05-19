@@ -2,6 +2,7 @@ ja ff een beginnetje gemaakt toch
 <!DOCTYPE html>
 <html lang="en">
 <FONT COLOR="black">
+    <body>
     <div class="context">
         <h1></h1>
     </div>
@@ -28,7 +29,7 @@ ja ff een beginnetje gemaakt toch
             <link rel="stylesheet" href="index.css">
         </head>
 
-        <body>
+
 
 
 
@@ -55,8 +56,18 @@ ja ff een beginnetje gemaakt toch
 
 
                 </section>
-
-
+                <section class="borderedSection">
+                    <label for='day' class="date">Day: </label><input type='number' id='day'/>
+                    <label for='month' class="date">Month: </label><input type='number' id='month'/>
+                    <label for='year' class="date">Year: </label><input type='number' id='year'/>
+                    <label for='place' class="date">Place: </label><input type='search' id='place'/>
+                    <br />
+                    <br />
+                    <button id="test">Predict</button>
+                </section>
+                <section class="borderedSection">
+                    <div id="display" class="date"></div>
+                </section>
 
 
                 <footer>
