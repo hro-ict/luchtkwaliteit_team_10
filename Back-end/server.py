@@ -1,59 +1,65 @@
 from flask import Flask
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session, make_response
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
-# app.config["SESSION_PERMANENT"] = False
-# app.config["SESSION_TYPE"] = "filesystem"
-# Session(app)
-
-# #mail
-# app.config['MAIL_SERVER']='smtp.mailtrap.io'
-# app.config['MAIL_PORT'] = 2525
-# app.config['MAIL_USERNAME'] = 'd8ec82679ae6a5'
-# app.config['MAIL_PASSWORD'] = '34a725c5807738'
-# app.config['MAIL_USE_TLS'] = False
-# app.config['MAIL_USE_SSL'] = False
-# mail = Mail(app)
-# #mail
-
-
-# from pymongo import MongoClient
-# client = MongoClient('localhost', 8444)
-# db = client.sites
-# sites = db.sites
-# ip= db.ip
-# users= db.users
-# tokens= db.tokens
-# feedbacks= db.feedbacks
-
-
-
-# def create_token(length):
-#     # choose from all lowercase letter
-#     letters = string.ascii_lowercase
-#     token = ''.join(random.choice(letters) for i in range(length))
-#     token+= str(random.randrange(1,9999))
-#     return token
-
-
-# def update_projects(username):
-#     project_counter=0
-#     all_sites= sites.find()
-#     for x in all_sites:
-#         if x["user"]==username:
-#             project_counter+=1
-#     session["projects"]= project_counter
-
+app.config['CORS_HEADERS'] = 'Content-Type'
+from datetime import datetime, date, timedelta
+from model import Air_predict
 
 
 
 @app.route("/")
 def main():
-    #return render_template("home2.html")
-    #return render_template("home2.html")
-    #return render_template("index.html")
-    return "Hello world"
+    #test= Air_predict(2023,10,10,2023,10,15)
+    # print(test.all_predictions)
+    # print(test.predict_all())
+    # teamplate= "<h3>Visit for documantation:
+    a=  "<a href= 'https://github.com/hro-ict/luchtkwaliteit_team_10/blob/main/README.md'><h1 style='text-align:center; margin-top:100px'>Click here for API documantation</h1></a>"
+    
+    return render_template("./index.html")
+
+
+@app.route("/get_data", methods=["POST"])
+def data():
+    
+    # response = make_response()
+    # response.headers.add("Access-Control-Allow-Origin", "*")
+    data= request.get_json()
+    print("END: ",data["end_date"])
+    print("START: ", data["start_date"])
+    start_date= data["start_date"].split("-")
+    end_date= data["end_date"].split("-")
+    start_year= int(start_date[0])
+    start_month= int(start_date[1])
+    start_day= int(start_date[2])
+
+    
+
+    end_year= int(end_date[0])
+    end_month= int(end_date[1])
+    end_day= int(end_date[2])
+
+    #date difference
+
+    d0 = date(start_year, start_month, start_day)
+    d1 = date(end_year, end_month, end_day)
+    delta = d1 - d0
+    difference= delta.days
+    print("Difference: ", delta.days)
+    print(type(difference))
+    #date difference
+
+    test= Air_predict(
+     start_year, start_month, start_day,
+     end_year, end_month, end_day
+    )
+    #print(test.predict_all())
+    # return {"response": data}
+    if difference<=5:
+        return {"data": test.predict_all()}
+    else:
+        return {"error": "MAX 5 DAYS"}
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3389, debug=True)
