@@ -22,12 +22,28 @@
   'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' 
             rel='stylesheet'>
       <style>
+
+body, html {
+  height: 100%;
+}
           .ui-datepicker {
               width: 100%; 
+             
           }
           h1{
               color:green;
           }
+
+          /* #main {
+            background-image: url('/static/cloud.jpg');
+             /* Full height */
+           height: 100%;
+
+/* Center and scale the image nicely */
+/* background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+          } */ */
 
 
           table {
@@ -51,40 +67,173 @@ tr:nth-child(even) {
 }
       </style>
 </head>
-<body>
-<div class="container mt-5 ">
-  <form >
-    <div class="row">
-      
-      <div class="col-12">
-        <h6 class="text-center">KIES DE KOMENDE DAGEN</h6>
-        <!-- <label class="text-center" for="end">kies de komende dagen</label> -->
-        <input type="text"  class="form-control" id="end" required/>
-      </div>
-    </div>
-    <button type="submit" id="get" class="btn btn-primary w-100 mt-5">GET</button>
+<body class="bg-image" style="background-image: url('/static/cloud.jpg');
+height: 100vh" >
 
-  </form>
+<div class="container-fluid"
+style="background-color:bisque;"
+>
+
+<div class="d-flex flex-row justify-content-between pt-1">
+  <div class="align-self-center"><img width="50px" src="/static/icon_1.png" alt=""></div>
+  <div class="align-self-center"><h5> <span class="badge bg-info">Luchtkwaliteit Checker</span>   </h5></div>
+  <div class="align-self-center"><img width="50px" src="/static/icon_2.png" alt=""></div>
+
+</div>
+<!-- <div class="row">
+  <div class="col-2 ">
+    <img width="50px" src="/static/icon_1.png" alt="">
+  </div>
+<div class="col-8">
+  <h6 class="text-center">Luchtkwaliteit Checker</h6>
+</div>
+  <div class="col-2">
+    <img width="50px" src="/static/icon_2.png" alt="">
+  </div>
+</div> -->
+</div>
+<div id="main" class="container pt-5">
+
+<div class="current">
+
+</div>
+<h3 class="text-center">
+  <img width="50px" src="/static/location.png">
+  <span class="badge bg-secondary">HOOGVLIET</span></h3>
+  <h1 class="text-center"><span class="badge bg-success">HUIDIGE LUCHTKWALITEIT</span></h1>
+<h1 class="text-center text-white fw-bold" id="current_value"></h1>
+<h3 class="text-center text-warning fw-bold d-none" id="current_state_matig" >
+  <span class="badge bg-warning">MATIG</span>
+</h3>  
+
+<h3 class="text-center  fw-bold d-none" id="current_state_good" >
+  <span class="badge bg-primary">GOED</span>
+</h3> 
 
 
-	<table class="mb-5">
-		<!-- <thead>
-		<tr>
-		
-			<td>
-				Uur
-			</td>
-			<td>
-				Status
-			</td>
-		</tr>
-		</thead> -->
 
-	</table>
+
+
+
+
+<!-- new -->
+
+
+<h5  class="text-center mean_colors">Wat betekent kleuren?</h5>
+<h6 class="text-center mean_colors">Klik hier voor uitleg</h6>
+<table id="explain_colors" class="d-none">
+  <tr>
+    <td style="background-color:blue; width: 50px;">
+
+    </td>
+    <td style="background-color: aliceblue !important;">
+      <small class="fw-bold">
+        GOED; Je hoeft je gebruikelijke activiteiten niet aan te passen
+
+      </small>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="background-color:yellow">
+
+    </td>
+    <td style="background-color: aliceblue !important;">
+      <small class="fw-bold">
+        MATIG; Je hoeft je gebruikelijke activiteiten niet aan te passen. Overweeg lichamelijke inspanningen te verminderen.
+
+      </small>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td style="background-color:#FFAD04">
+
+    </td>
+    <td style="background-color: aliceblue !important;">
+      <small class="fw-bold">
+        ONVOLDOENDE; Overleg eventueel met je arts over aangepaste medicatie
+
+      </small>
+    </td>
+  </tr>
+  
+
+
+</table>
+<hr class="border border-5 border-info">
+<h5 id="aantal_dagen" class="text-center mt-4"></h5>
+
+<table id="predict_table" class="mb-5  table"
+
+>
+  <!-- <thead>
+  <tr>
+  
+    <td>
+      Uur
+    </td>
+    <td>
+      Status
+    </td>
+  </tr>
+  </thead> -->
+
+</table>
+
+
+
+<!-- new -->
+
+
+
 </div>
 
-
 <script>
+
+var current_date= new Date()
+var current_hour= current_date.getHours()-3
+var format_date= moment(current_date).format('YYYY-M-D')
+current_date= format_date.split("T")[0]
+
+
+// var url= `https://iq.luchtmeetnet.nl/open_api/lki?order_direction=desc&station_number=NL01496&order_by=timestamp_measured&start=${current_date}&end=${current_date}`
+
+url2= `https://iq.luchtmeetnet.nl/open_api/lki?order_direction=desc&station_number=NL01496&order_by=timestamp_measured&start=${current_date}T${current_hour}:00:00Z&end=${current_date}T${current_hour}:00:00Z`
+
+console.log(url2)
+$.get(url2, function(data){
+  var current_value= data.data[0].value
+  $("#current_value").html(current_value)
+  if (current_value<5){
+    $("#current_state_good").removeClass("d-none")
+   
+  }
+  else {
+    
+    $("#current_state_matig").removeClass("d-none")
+  
+  
+  }
+})
+
+
+
+$(".mean_colors").click(function(){
+   var has_class= $("#explain_colors").hasClass("d-none")
+   if (has_class){
+    $("#explain_colors").removeClass("d-none")
+   }
+   else {
+    $("#explain_colors").addClass("d-none")
+   }
+  
+
+})
+
+
+
 $(function() {
     $("#end").datepicker({
       maxDate:'+5d',
@@ -97,24 +246,31 @@ $(function() {
 
 let start=""
 let end=""
-$("form").submit(function(e){
-  e.preventDefault()
 
-  $("table").empty()
+  // $('#myModal').modal('hide');
+  // $("predict_table").empty()
+  
   const today = new Date()
   const tomorrow = new Date(today)
   tomorrow.setDate(tomorrow.getDate() + 1)
-
   var next_day = moment(tomorrow).format('YYYY-MM-DD');
+//////////////////
 
+  var next_days= new Date(today)
+  next_days.setDate(next_days.getDate()+5)
+  next_days= moment(next_days).format('YYYY-MM-DD')
+  
+   console.log("next days:", next_days)
+   
   start= next_day
-  end= $("#end").val()
-  end= end.replace("/", "-").replace("/", "-")
+  // end= $("#end").val()
+  
+  // end= end.replace("/", "-").replace("/", "-")
   const server_data= {
     //max 5 days
     //year-month-day
     start_date: start,
-    end_date: end
+    end_date: next_days
 }
   
 $.ajax({
@@ -124,8 +280,9 @@ $.ajax({
   contentType: "application/json",
   dataType: 'json' ,
   success: function(data){
+    end= $("#end").val("")
     //data 5 days predictions
-    
+  var aantaal_dagen= data.data.length/24
    
     let counter=0
     if (data.error){
@@ -138,8 +295,11 @@ $.ajax({
 })
     }
     else {
+
+      $("#aantal_dagen").html("Voorspelling aankomende "+aantaal_dagen+" dagen")
       data.data.forEach(element => {
       counter+=1
+      
       console.log(element.date)
       const d = new Date(element.date);
       const weekday = ["Zondag","Maandag","Dinsdag","Woensdag","Donderdag","Vrijdag","Zaterdag"];
@@ -149,27 +309,43 @@ $.ajax({
       var format_day= format_date[2]
       var format_month= format_date[1]
       var format_year= format_date[0]
+      var state_symbool;
       format_date= `${format_day}-${format_month}-${format_year}`
-     
+      
+      
+      if (element.state=="GOED"){
+          state_symbool= "<td style='background-color:blue'></td>"
+      }
+
+      if (element.state=="MATIG"){
+          state_symbool= "<td style='background-color:yellow; width:50px'></td>"
+      }
+
 
       const html= `<tr>
    
-      <td>${element.hour} </td>
-      <td>${element.state} </td>
+      <td>
+        <span class='badge bg-danger'>
+        ${element.hour} 
+        </span>
+        </td>
+      ${state_symbool}
       </tr>
       `
 
       if (element.hour=="0:00"){
        
-        $("table").append(`<h3 class='text-center fw-bold mt-5 mb-3'>${format_date}- ${day}  </h3>`)
+        $("#predict_table").append(`<h3 class='text-center fw-bold mt-5 mb-3'><span class='badge bg-dark'>${format_date}- ${day} </span> </h3>`)
         // $("table").append(
         //   "<thead> <tr><td>UUR</td><td>STATUS</td></tr> </thead>"
         // )
       }
-      $("table").append(html)
+      $("#predict_table").append(html)
       
       
     });
+
+    $('#myModal').modal('show');
 
     }
    
@@ -180,7 +356,7 @@ $.ajax({
 });
 
 
-})
+
 
 
 </script>
