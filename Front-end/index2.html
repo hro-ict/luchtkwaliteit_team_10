@@ -25,7 +25,15 @@
 
 body, html {
   height: 100%;
+  background-image: url('https://cdn.discordapp.com/attachments/373586526510252064/1110889734898712697/image.png') ;
+  background-size: cover ;
+  background-attachment: fixed;
+  background-position: center;
 }
+h2{
+            font-size: 75px;
+          }
+
           .ui-datepicker {
               width: 100%; 
              
@@ -34,16 +42,7 @@ body, html {
               color:green;
           }
 
-          /* #main {
-            background-image: url('/images/cloud.jpg');
-             /* Full height */
-           height: 100%;
-
-/* Center and scale the image nicely */
-/* background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-          } */ */
+          
 
 
           table {
@@ -67,17 +66,16 @@ tr:nth-child(even) {
 }
       </style>
 </head>
-<body class="bg-image" style="background-image: url('/images/cloud.jpg');
-height: 100vh" >
+<body>
 
 <div class="container-fluid"
-style="background-color:bisque;"
+style="background-color: #40A1FF;"
 >
 
 <div class="d-flex flex-row justify-content-between pt-1">
-  <div class="align-self-center"><img width="50px" src="/images/icon_1.png" alt=""></div>
-  <div class="align-self-center"><h5> <span class="badge bg-info">Luchtkwaliteit Checker</span>   </h5></div>
-  <div class="align-self-center"><img width="50px" src="/images/icon_2.png" alt=""></div>
+  <div class="align-self-center"><img width="50px" src="https://cdn.discordapp.com/attachments/373586526510252064/1110261967727370250/image.png" alt=""></div>
+  <div class="align-self-center"><h2> <span class="badge bg-info">Luchtkwaliteit Checker</span>   </h2></div>
+  <div class="align-self-center"><img width="50px" src="https://cdn.discordapp.com/attachments/373586526510252064/1110261967727370250/image.png" alt=""></div>
 
 </div>
 <!-- <div class="row">
@@ -98,7 +96,7 @@ style="background-color:bisque;"
 
 </div>
 <h3 class="text-center">
-  <img width="50px" src="/images/location.png">
+  
   <span class="badge bg-secondary">HOOGVLIET</span></h3>
   <h1 class="text-center"><span class="badge bg-success">HUIDIGE LUCHTKWALITEIT</span></h1>
 <h1 class="text-center text-white fw-bold" id="current_value"></h1>
@@ -119,11 +117,11 @@ style="background-color:bisque;"
 <!-- new -->
 
 
-<h5  class="text-center mean_colors">Wat betekent kleuren?</h5>
-<h6 class="text-center mean_colors">Klik hier voor uitleg</h6>
+<h5  class="text-center mean_colors">Uitleg kleuren</h5>
+<h6 class="text-center mean_colors">Klik hier</h6>
 <table id="explain_colors" class="d-none">
   <tr>
-    <td style="background-color:blue; width: 50px;">
+    <td style="background-color:rgb(63, 172, 0); width: 50px;">
 
     </td>
     <td style="background-color: aliceblue !important;">
@@ -135,7 +133,7 @@ style="background-color:bisque;"
   </tr>
 
   <tr>
-    <td style="background-color:yellow">
+    <td style="background-color: yellow">
 
     </td>
     <td style="background-color: aliceblue !important;">
@@ -148,7 +146,7 @@ style="background-color:bisque;"
 
 
   <tr>
-    <td style="background-color:#FFAD04">
+    <td style="background-color:red">
 
     </td>
     <td style="background-color: aliceblue !important;">
@@ -314,7 +312,7 @@ $.ajax({
       
       
       if (element.state=="GOED"){
-          state_symbool= "<td style='background-color:blue'></td>"
+          state_symbool= "<td style='background-color:rgb(63, 172, 0)'></td>"
       }
 
       if (element.state=="MATIG"){
