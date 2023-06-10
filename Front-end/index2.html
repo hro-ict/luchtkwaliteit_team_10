@@ -55,6 +55,7 @@ td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+  background-color: rgb(205, 231, 255);
 }
 
 thead {
@@ -124,7 +125,7 @@ style="background-color: #40A1FF;"
     <td style="background-color:rgb(63, 172, 0); width: 50px;">
 
     </td>
-    <td style="background-color: aliceblue !important;">
+    <td style="background-color: rgb(205, 231, 255) !important;">
       <small class="fw-bold">
         GOED; Je hoeft je gebruikelijke activiteiten niet aan te passen
 
@@ -136,7 +137,7 @@ style="background-color: #40A1FF;"
     <td style="background-color: yellow">
 
     </td>
-    <td style="background-color: aliceblue !important;">
+    <td style="background-color: rgb(205, 231, 255) !important;">
       <small class="fw-bold">
         MATIG; Je hoeft je gebruikelijke activiteiten niet aan te passen. Overweeg lichamelijke inspanningen te verminderen.
 
@@ -149,13 +150,22 @@ style="background-color: #40A1FF;"
     <td style="background-color:red">
 
     </td>
-    <td style="background-color: aliceblue !important;">
+    <td style="background-color: rgb(205, 231, 255) !important;">
       <small class="fw-bold">
         ONVOLDOENDE; Overleg eventueel met je arts over aangepaste medicatie
 
       </small>
     </td>
   </tr>
+
+  <div class="text-center">
+    <button id="prevDayBtn">
+      Previous day
+    </button>
+    <button id="nextDayBtn" >
+      Next day
+    </button>
+  </div>
   
 
 
@@ -190,35 +200,25 @@ style="background-color: #40A1FF;"
 
 <script>
 
-var current_date= new Date()
-var current_hour= current_date.getHours()-3
-var format_date= moment(current_date).format('YYYY-M-D')
-current_date= format_date.split("T")[0]
-
-
-// var url= `https://iq.luchtmeetnet.nl/open_api/lki?order_direction=desc&station_number=NL01496&order_by=timestamp_measured&start=${current_date}&end=${current_date}`
-
-url2= `https://iq.luchtmeetnet.nl/open_api/lki?order_direction=desc&station_number=NL01496&order_by=timestamp_measured&start=${current_date}T${current_hour}:00:00Z&end=${current_date}T${current_hour}:00:00Z`
-
-console.log(url2)
-$.get(url2, function(data){
-  var current_value= data.data[0].value
-  $("#current_value").html(current_value)
-  if (current_value<5){
-    $("#current_state_good").removeClass("d-none")
-   
-  }
-  else {
-    
-    $("#current_state_matig").removeClass("d-none")
+$(document).ready(function() {
+  var currentDate = moment().subtract(3, 'hours').format('YYYY-MM-DD');
+  var currentHour = moment().subtract(3, 'hours').format('H');
+  var tableDate = currentDate;
   
+  var url2 = `https://iq.luchtmeetnet.nl/open_api/lki?order_direction=desc&station_number=NL01496&order_by=timestamp_measured&start=${currentDate}T${currentHour}:00:00Z&end=${currentDate}T${currentHour}:00:00Z`;
   
-  }
-})
+  // Fetch and display current air quality
+  $.get(url2, function(data) {
+    var current_value = data.data[0].value;
+    $("#current_value").html(current_value);
+    if (current_value < 5) {
+      $("#current_state_good").removeClass("d-none");
+    } else {
+      $("#current_state_matig").removeClass("d-none");
+    }
+  });
 
-
-
-$(".mean_colors").click(function(){
+  $(".mean_colors").click(function(){
    var has_class= $("#explain_colors").hasClass("d-none")
    if (has_class){
     $("#explain_colors").removeClass("d-none")
@@ -229,130 +229,67 @@ $(".mean_colors").click(function(){
   
 
 })
-
-
-
-$(function() {
-    $("#end").datepicker({
-      maxDate:'+5d',
-        minDate: '+1',
-        dateFormat: "yy-m-d"
-    }
-    );
+  
+  // Fetch and display air quality data for the selected day
+  function fetchAndDisplayData(date) {
+    var serverData = {
+      start_date: date,
+      end_date: date
+    };
     
-});
-
-let start=""
-let end=""
-
-  // $('#myModal').modal('hide');
-  // $("predict_table").empty()
-  
-  const today = new Date()
-  const tomorrow = new Date(today)
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  var next_day = moment(tomorrow).format('YYYY-MM-DD');
-//////////////////
-
-  var next_days= new Date(today)
-  next_days.setDate(next_days.getDate()+5)
-  next_days= moment(next_days).format('YYYY-MM-DD')
-  
-   console.log("next days:", next_days)
-   
-  start= next_day
-  // end= $("#end").val()
-  
-  // end= end.replace("/", "-").replace("/", "-")
-  const server_data= {
-    //max 5 days
-    //year-month-day
-    start_date: start,
-    end_date: next_days
-}
-  
-$.ajax({
-  type: "POST",
-  url: "http://143.47.183.218:3389/get_data",
-  data: JSON.stringify(server_data),
-  contentType: "application/json",
-  dataType: 'json' ,
-  success: function(data){
-    end= $("#end").val("")
-    //data 5 days predictions
-  var aantaal_dagen= data.data.length/24
-   
-    let counter=0
-    if (data.error){
-      $("table").empty()
-      Swal.fire({
-  // title: 'Error!',
-  text: 'U mag maximaal 5 dagen kiezen',
-  icon: 'error',
-
-})
-    }
-    else {
-
-      $("#aantal_dagen").html("Voorspelling aankomende "+aantaal_dagen+" dagen")
-      data.data.forEach(element => {
-      counter+=1
-      
-      console.log(element.date)
-      const d = new Date(element.date);
-      const weekday = ["Zondag","Maandag","Dinsdag","Woensdag","Donderdag","Vrijdag","Zaterdag"];
-      let day = weekday[d.getDay()];
-       
-      var format_date= element.date.split("-")
-      var format_day= format_date[2]
-      var format_month= format_date[1]
-      var format_year= format_date[0]
-      var state_symbool;
-      format_date= `${format_day}-${format_month}-${format_year}`
-      
-      
-      if (element.state=="GOED"){
-          state_symbool= "<td style='background-color:rgb(63, 172, 0)'></td>"
+    $.ajax({
+      type: "POST",
+      url: "http://143.47.183.218:3389/get_data",
+      data: JSON.stringify(serverData),
+      contentType: "application/json",
+      dataType: "json",
+      success: function(data) {
+        moment.locale('nl');
+        $("#predict_table").empty();
+        var day = moment(date).format('dddd');
+        $("#predict_table").append(`<h3 class='text-center fw-bold mt-5 mb-3'><span class='badge bg-dark'>${date} - ${day}</span></h3>`);
+        var stateSymbool;
+        
+        data.data.forEach(element => {
+          var hour = element.hour;
+          var state = element.state;
+          
+          if (state === "GOED") {
+            stateSymbool = "<td style='background-color:rgb(63, 172, 0)'></td>";
+          } else if (state === "MATIG") {
+            stateSymbool = "<td style='background-color:yellow; width:50px'></td>";
+          }
+          
+          const html = `<tr>
+            <td>
+              <span class='badge bg-danger'>${hour}</span>
+            </td>
+            ${stateSymbool}
+          </tr>`;
+          
+          $("#predict_table").append(html);
+        });
+      },
+      error: function(err) {
+        console.log(err);
       }
-
-      if (element.state=="MATIG"){
-          state_symbool= "<td style='background-color:yellow; width:50px'></td>"
-      }
-
-
-      const html= `<tr>
-   
-      <td>
-        <span class='badge bg-danger'>
-        ${element.hour} 
-        </span>
-        </td>
-      ${state_symbool}
-      </tr>
-      `
-
-      if (element.hour=="0:00"){
-       
-        $("#predict_table").append(`<h3 class='text-center fw-bold mt-5 mb-3'><span class='badge bg-dark'>${format_date}- ${day} </span> </h3>`)
-        // $("table").append(
-        //   "<thead> <tr><td>UUR</td><td>STATUS</td></tr> </thead>"
-        // )
-      }
-      $("#predict_table").append(html)
-      
-      
     });
-
-    $('#myModal').modal('show');
-
-    }
-   
-  },
-  error: function(err){
-    console.log(err)
   }
+  
+  // Event handler for previous day button
+  $("#prevDayBtn").click(function() {
+    tableDate = moment(tableDate).subtract(1, 'days').format('YYYY-MM-DD');
+    fetchAndDisplayData(tableDate);
+  });
+  
+  // Event handler for next day button
+  $("#nextDayBtn").click(function() {
+    tableDate = moment(tableDate).add(1, 'days').format('YYYY-MM-DD');
+    fetchAndDisplayData(tableDate);
+  });
+  
+  fetchAndDisplayData(tableDate);
 });
-
 
 
 
