@@ -246,7 +246,7 @@ $(document).ready(function() {
       success: function(data) {
         moment.locale('nl');
         $("#predict_table").empty();
-        var day = moment(date).format('dddd');
+        var day = moment(date).locale('nl').format('dddd');
         $("#predict_table").append(`<h3 class='text-center fw-bold mt-5 mb-3'><span class='badge bg-dark'>${date} - ${day}</span></h3>`);
         var stateSymbool;
         
@@ -278,14 +278,20 @@ $(document).ready(function() {
   
   // Event handler for previous day button
   $("#prevDayBtn").click(function() {
-    tableDate = moment(tableDate).subtract(1, 'days').format('YYYY-MM-DD');
-    fetchAndDisplayData(tableDate);
+    var minDate = moment().subtract(0, 'days').format('YYYY-MM-DD');
+    if (tableDate > minDate) {
+      tableDate = moment(tableDate).subtract(1, 'days').format('YYYY-MM-DD');
+      fetchAndDisplayData(tableDate);
+    }
   });
-  
+
   // Event handler for next day button
   $("#nextDayBtn").click(function() {
-    tableDate = moment(tableDate).add(1, 'days').format('YYYY-MM-DD');
-    fetchAndDisplayData(tableDate);
+    var maxDate = moment().add(5, 'days').format('YYYY-MM-DD');
+    if (tableDate < maxDate) {
+      tableDate = moment(tableDate).add(1, 'days').format('YYYY-MM-DD');
+      fetchAndDisplayData(tableDate);
+    }
   });
   
   fetchAndDisplayData(tableDate);
