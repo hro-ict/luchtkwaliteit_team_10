@@ -249,7 +249,6 @@ $(document).ready(function() {
       contentType: "application/json",
       dataType: "json",
       success: function(data) {
-	console.log(data.data)
         moment.locale('nl');
         $("#predict_table").empty();
         var day = moment(date).locale('nl').format('dddd');
@@ -260,13 +259,11 @@ $(document).ready(function() {
           var hour = element.hour;
           var state = element.state;
           
-          if (element.state=="GOED"){
-          state_symbool= `<td class='fw-bold text-white' style='background-color:blue'>${element.value.toFixed(2)}</td>`
-      }
-
-      if (element.state=="MATIG"){
-          state_symbool= `<td class='fw-bold text-dark'  style='background-color:yellow; width:50px'>${element.value.toFixed(2)}</td>`
-      }
+          if (state === "GOED") {
+            stateSymbool = "<td style='background-color:rgb(63, 172, 0)'></td>";
+          } else if (state === "MATIG") {
+            stateSymbool = "<td style='background-color:yellow; width:50px'></td>";
+          }
           
           const html = `<tr>
             <td>
