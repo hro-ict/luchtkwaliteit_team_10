@@ -110,9 +110,9 @@ class Air_predict:
 			no2_index=0
 			datum= pm10_y+":00"
 			pm10= float(str(pm10_x).strip("[").strip("]"))
-			pm25= float(str(pm25_x).strip("[").strip("]"))+randrange(0,20)
-			o3= float(str(o3_x).strip("[").strip("]"))+randrange(0,20)
-			no2= float(str(no2_x).strip("[").strip("]"))+randrange(0,20)
+			pm25= float(str(pm25_x).strip("[").strip("]"))
+			o3= float(str(o3_x).strip("[").strip("]"))
+			no2= float(str(no2_x).strip("[").strip("]"))
 			
 			if pm10 <10: pm10_index=1
 			if pm10>10 and pm10<20: pm10_index=2
