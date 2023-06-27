@@ -4,7 +4,7 @@ Predicting the air quality for the next 5 days using AI
 
 Predicting the air quality for the next 5 days using AI is an important aspect of our project. By analyzing historical data and other relevant information, we can train a model capable of making predictions about future air quality. These predictions can assist people in making informed decisions about their activities and taking precautions to protect themselves from poor air quality.
 
-The AI model utilizes various algorithms and techniques, such as machine learning and time series analysis, to identify patterns and trends in air quality data. The model learns from historical data and applies this knowledge to predict future values. It can take into account factors such as weather conditions, traffic patterns, industrial activities, and other relevant variables that may impact air quality.
+The AI model utilizes various algorithms and techniques, such as machine learning and time series analysis, to identify patterns and trends in air quality data. The model learns from historical data and applies this knowledge to predict future values. 
 
 The ultimate output of the AI model is a forecast of air quality for the next 5 days. These predictions can be displayed in the app, providing users with easy access to the information and enabling them to make informed decisions regarding their daily activities. It is important to note that the accuracy of the predictions may vary depending on the availability and quality of data, as well as the complexity of the air quality factors included in the model.
 
