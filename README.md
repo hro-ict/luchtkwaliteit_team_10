@@ -28,13 +28,13 @@ pip3
 Clone the project
 
 ```bash
-    git clone https://github.com/danekoenders/tle-team04.git
+    git clone https://github.com/hro-ict/luchtkwaliteit_team_10.git
 ```
 
 Go to the project directory
 
 ```bash
- cd tle-team04
+ cd luchtkwaliteit_team_10
 ```
 
 Install dependencies
@@ -47,6 +47,6 @@ Install dependencies
 Start the server
 
 ```bash
-  python3 tle.py
+  python3 server.py
 ```
-The project is now live on localhost:8002
+The project is now live on localhost:3389
