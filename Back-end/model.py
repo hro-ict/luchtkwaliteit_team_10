@@ -26,7 +26,7 @@ class Air_predict:
 		self.end_month= end_month
 		self.end_day= end_day
 		self.all_predictions = []
-		self.data = pd.read_csv('/home/opc/TLE2/luchtkwaliteit_team_10/Back-end/all_data.csv').dropna()
+		self.data = pd.read_csv('component_data/all_data.csv').dropna()
 		
 
 
